@@ -8,13 +8,13 @@ import {
   onConnect,
   incrementNodeID,
 } from "../store/nodesSlice";
+import { createInitialNodeData } from "../config/nodeConfigs";
 
 import { InputNode } from "../nodes/InputNode";
 import { OutputNode } from "../nodes/OutputNode";
 import { TextNode } from "../nodes/TextNode";
 import { LLmNode } from "../nodes/LLmNode";
 import "reactflow/dist/style.css";
-
 
 const gridSize = 20;
 const proOptions = { hideAttribution: true };
@@ -26,7 +26,6 @@ const nodeTypes = {
   customOutput: OutputNode,
   text: TextNode,
 };
-
 
 export const PipelineUI = () => {
   const reactFlowWrapper = useRef(null);
@@ -44,11 +43,6 @@ export const PipelineUI = () => {
     const count = (nodeIDs[type] ?? 0) + 1; // We add +1 because dispatch runs async
     return `${type}-${count}`;
   };
-
-  const getInitNodeData = (nodeID, type) => ({
-    id: nodeID,
-    nodeType: type,
-  });
 
   const onDrop = useCallback(
     (event) => {
@@ -73,7 +67,7 @@ export const PipelineUI = () => {
         id: nodeID,
         type,
         position,
-        data: getInitNodeData(nodeID, type),
+        data: createInitialNodeData(nodeID, type),
       };
 
       dispatch(addNode(newNode));
