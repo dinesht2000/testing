@@ -15,7 +15,8 @@ export const BaseNode = ({
     handles = [],
     fields = [],
     defaultValues = {},
-    className = ''
+    className = '',
+    description
   } = config;
 
   // Initialize state for all fields
@@ -151,6 +152,18 @@ export const BaseNode = ({
         {title}
       </div>
 
+      {/* Description for nodes without fields */}
+      {description && fields.length === 0 && (
+        <div style={{ 
+          fontSize: '11px',
+          color: '#666',
+          textAlign: 'center',
+          marginBottom: '8px'
+        }}>
+          {description}
+        </div>
+      )}
+
       {/* Fields */}
       <div style={{ 
         display: 'flex', 
@@ -181,7 +194,7 @@ export const BaseNode = ({
           key={handle.id}
           type={handle.type}
           position={handle.position}
-          id={handle.id}
+          id={`${id}-${handle.id}`}
           style={{
             width: '10px',
             height: '10px',
