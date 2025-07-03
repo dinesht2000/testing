@@ -90,6 +90,12 @@ export const nodeConfigs = {
     width: 200,
     height: 100,
     description: 'This is a LLM.',
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
     handles: [
       {
         id: 'system',
@@ -109,29 +115,43 @@ export const nodeConfigs = {
         position: Position.Right
       }
     ]
-  }
-};
+  },
 
-// Helper function to get node config
-export const getNodeConfig = (nodeType) => {
-  return nodeConfigs[nodeType] || {};
-};
-
-// Helper function to create initial node data
-export const createInitialNodeData = (nodeId, nodeType) => {
-  const config = getNodeConfig(nodeType);
-  const data = { id: nodeId, nodeType };
-  
-  // Initialize field values
-  if (config.fields) {
-    config.fields.forEach(field => {
-      if (typeof field.defaultValue === 'function') {
-        data[field.name] = field.defaultValue(nodeId);
-      } else if (field.defaultValue !== undefined) {
-        data[field.name] = field.defaultValue;
+  // Example of how to add new node types easily
+  filter: {
+    title: 'Filter',
+    width: 200,
+    height: 140,
+    fields: [
+      {
+        name: 'filterType',
+        type: 'select',
+        label: 'Filter Type',
+        defaultValue: 'contains',
+        options: [
+          { value: 'contains', label: 'Contains' },
+          { value: 'equals', label: 'Equals' },
+          { value: 'startsWith', label: 'Starts With' },
+          { value: 'endsWith', label: 'Ends With' }
+        ]
+      },
+      {
+        name: 'filterValue',
+        type: 'text',
+        label: 'Filter Value',
+        placeholder: 'Enter filter value...'
       }
-    });
-  }
-  
-  return data;
-};
+    ],
+    handles: [
+      {
+        id: 'input',
+        type: 'target',
+        position: Position.Left
+      },
+      {
+        id: 'output',
+        type: 'source',
+        position: Position.Right
+      }
+    ]
+  },
